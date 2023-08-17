@@ -19,29 +19,16 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # Liste des blagues
-jokelist = ['''Pourquoi Napoléon n'a-t-il jamais déménager ?
-Parce qu'il avait un Bon appart' !''',
-'''Un jour un serveur de restaurant dit au chef cuisinier : "je
-pense qu'on serait de bons joueurs de tennis"
-Le chef demande : Pourquoi tu dis ça ? et le serveur répond : Parce
-qu'on fait déjà trois services par jour"''',
-'''Pourquoi les marins ne peuvent-ils pas écrire ?
-Parce qu'ils ont jeté l'ancre !''',
-'''Quelle est la monnaie de la mer ?
-Le sou marin.''',
-'''Un électricien et un plombier font un match de judo. A votre
-avis, qui est le plus fort ?
-L'électricien bien sûr, car il connait toutes les prises.''',
-'''Quel est le comble pour un joueur de pétanque ?
-C'est de perdre la boule.''',
-'''Qu'est ce qu'une maman dinosaure raconte à son enfant avant
-qu'il aille se coucher ?
-Une préhistoire.''',
-'''Un client entre dans une librairie et dit au libraire :
-- je voudrais un livre
-- de quel auteur ?
-- 20 cm, je crois...
-- Vincent qui ?''']
+with open('listeblague.txt', 'r') as f:
+    jokelist = []
+    current_block = ''
+    for line in f:
+        if line.strip() == '{':
+            current_block = ''
+        elif line.strip() == '}':
+            jokelist.append(current_block.strip())
+        else:
+            current_block += line
 
 
 def joke():
@@ -57,7 +44,7 @@ class MyClient(discord.Client):
         print('------')
 
     async def on_message(self, message):
-        # On vérifie que le bot ne se répobnde à lui-même
+        # On vérifie que le bot ne se réponde pas à lui-même
         if message.author.id == self.user.id:
             return
 
