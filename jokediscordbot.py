@@ -7,6 +7,7 @@
 # vous intéresser au scripting et à l’automatisation avec des bots. Vous
 # pouvez facilement faire un bot qui execute des tâches très simples en
 # quelques dizaines de lignes de code.
+#TODO: Nettoyer la jokelist pour enlever les {} et les caractères accentués
 
 import os
 
@@ -23,9 +24,10 @@ with open('listeblague.txt', 'r') as f:
     jokelist = []
     current_block = ''
     for line in f:
-        if line.strip() == '{':
-            current_block = ''
-        elif line.strip() == '}':
+        if '{' in line:
+            current_block = line
+        elif '}' in line:
+            current_block += line
             jokelist.append(current_block.strip())
         else:
             current_block += line
